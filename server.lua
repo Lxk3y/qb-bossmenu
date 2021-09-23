@@ -2,15 +2,15 @@ local Accounts = {}
 
 CreateThread(function()
     Wait(500)
-    local result = json.decode(LoadResourceFile(GetCurrentResourceName(), "./accounts.json"))
+    local result = exports.oxmysql:fetchSync('SELECT * FROM bossmenu_accounts')
     if not result then
         return
     end
-    for k,v in pairs(result) do
-        local k = tostring(k)
-        local v = tonumber(v)
-        if k and v then
-            Accounts[k] = v
+    for k, v in pairs(result) do
+        local job = v.account
+        local money = tonumber(v.money)
+        if job and money then
+            Accounts[job] = money
         end
     end
 end)
@@ -23,6 +23,13 @@ end)
 -- Export
 function GetAccount(account)
     return Accounts[account] or 0
+end
+
+function UpdateAccountMoney(account, money)
+    exports.oxmysql:insert('UPDATE bossmenu_accounts SET money = :money WHERE account = :account', {
+        ['money'] = tostring(money),
+        ['account'] = account
+    })
 end
 
 -- Withdraw Money
@@ -43,7 +50,7 @@ AddEventHandler("qb-bossmenu:server:withdrawMoney", function(amount)
         TriggerClientEvent('QBCore:Notify', src, 'Not Enough Money', 'error')
         return
     end
-    SaveResourceFile(GetCurrentResourceName(), "./accounts.json", json.encode(Accounts), -1)
+    UpdateAccountMoney(job, Accounts[job])
     TriggerEvent('qb-log:server:CreateLog', 'bossmenu', 'Withdraw Money', "Successfully withdrawn $" .. amount .. ' (' .. job .. ')', src)
 end)
 
@@ -64,7 +71,7 @@ AddEventHandler("qb-bossmenu:server:depositMoney", function(amount)
         TriggerClientEvent('QBCore:Notify', src, 'Not Enough Money', "error")
         return
     end
-    SaveResourceFile(GetCurrentResourceName(), "./accounts.json", json.encode(Accounts), -1)
+    UpdateAccountMoney(job, Accounts[job])
     TriggerEvent('qb-log:server:CreateLog', 'bossmenu', 'Deposit Money', "Successfully deposited $" .. amount .. ' (' .. job .. ')', src)
 end)
 
@@ -76,7 +83,7 @@ AddEventHandler("qb-bossmenu:server:addAccountMoney", function(account, amount)
     
     Accounts[account] = Accounts[account] + amount
     TriggerClientEvent('qb-bossmenu:client:refreshSociety', -1, account, Accounts[account])
-    SaveResourceFile(GetCurrentResourceName(), "./accounts.json", json.encode(Accounts), -1)
+    UpdateAccountMoney(job, Accounts[job])
 end)
 
 RegisterServerEvent("qb-bossmenu:server:removeAccountMoney")
@@ -90,7 +97,7 @@ AddEventHandler("qb-bossmenu:server:removeAccountMoney", function(account, amoun
     end
 
     TriggerClientEvent('qb-bossmenu:client:refreshSociety', -1, account, Accounts[account])
-    SaveResourceFile(GetCurrentResourceName(), "./accounts.json", json.encode(Accounts), -1)
+    UpdateAccountMoney(job, Accounts[job])
 end)
 
 -- Get Employees
