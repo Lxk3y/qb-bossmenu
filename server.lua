@@ -83,7 +83,7 @@ AddEventHandler("qb-bossmenu:server:addAccountMoney", function(account, amount)
     
     Accounts[account] = Accounts[account] + amount
     TriggerClientEvent('qb-bossmenu:client:refreshSociety', -1, account, Accounts[account])
-    UpdateAccountMoney(job, Accounts[job])
+    UpdateAccountMoney(account, Accounts[account])
 end)
 
 RegisterNetEvent("qb-bossmenu:server:removeAccountMoney")
@@ -97,7 +97,7 @@ AddEventHandler("qb-bossmenu:server:removeAccountMoney", function(account, amoun
     end
 
     TriggerClientEvent('qb-bossmenu:client:refreshSociety', -1, account, Accounts[account])
-    UpdateAccountMoney(job, Accounts[job])
+    UpdateAccountMoney(account, Accounts[account])
 end)
 
 -- Get Employees
