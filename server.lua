@@ -33,8 +33,7 @@ function UpdateAccountMoney(account, money)
 end
 
 -- Withdraw Money
-RegisterNetEvent("qb-bossmenu:server:withdrawMoney")
-AddEventHandler("qb-bossmenu:server:withdrawMoney", function(amount)
+RegisterNetEvent("qb-bossmenu:server:withdrawMoney", function(amount)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local job = Player.PlayerData.job.name
@@ -55,8 +54,7 @@ AddEventHandler("qb-bossmenu:server:withdrawMoney", function(amount)
 end)
 
 -- Deposit Money
-RegisterNetEvent("qb-bossmenu:server:depositMoney")
-AddEventHandler("qb-bossmenu:server:depositMoney", function(amount)
+RegisterNetEvent("qb-bossmenu:server:depositMoney", function(amount)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local job = Player.PlayerData.job.name
@@ -75,8 +73,7 @@ AddEventHandler("qb-bossmenu:server:depositMoney", function(amount)
     TriggerEvent('qb-log:server:CreateLog', 'bossmenu', 'Deposit Money', "Successfully deposited $" .. amount .. ' (' .. job .. ')', src)
 end)
 
-RegisterNetEvent("qb-bossmenu:server:addAccountMoney")
-AddEventHandler("qb-bossmenu:server:addAccountMoney", function(account, amount)
+RegisterNetEvent("qb-bossmenu:server:addAccountMoney", function(account, amount)
     if not Accounts[account] then
         Accounts[account] = 0
     end
@@ -86,8 +83,7 @@ AddEventHandler("qb-bossmenu:server:addAccountMoney", function(account, amount)
     UpdateAccountMoney(account, Accounts[account])
 end)
 
-RegisterNetEvent("qb-bossmenu:server:removeAccountMoney")
-AddEventHandler("qb-bossmenu:server:removeAccountMoney", function(account, amount)
+RegisterNetEvent("qb-bossmenu:server:removeAccountMoney", function(account, amount)
     if not Accounts[account] then
         Accounts[account] = 0
     end
@@ -132,8 +128,7 @@ QBCore.Functions.CreateCallback('qb-bossmenu:server:GetEmployees', function(sour
 end)
 
 -- Grade Change
-RegisterNetEvent('qb-bossmenu:server:updateGrade')
-AddEventHandler('qb-bossmenu:server:updateGrade', function(target, grade)
+RegisterNetEvent('qb-bossmenu:server:updateGrade', function(target, grade)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local Employee = QBCore.Functions.GetPlayerByCitizenId(target)
@@ -160,8 +155,7 @@ AddEventHandler('qb-bossmenu:server:updateGrade', function(target, grade)
 end)
 
 -- Fire Employee
-RegisterNetEvent('qb-bossmenu:server:fireEmployee')
-AddEventHandler('qb-bossmenu:server:fireEmployee', function(target)
+RegisterNetEvent('qb-bossmenu:server:fireEmployee', function(target)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local Employee = QBCore.Functions.GetPlayerByCitizenId(target)
@@ -196,8 +190,7 @@ AddEventHandler('qb-bossmenu:server:fireEmployee', function(target)
 end)
 
 -- Recruit Player
-RegisterNetEvent('qb-bossmenu:server:giveJob')
-AddEventHandler('qb-bossmenu:server:giveJob', function(recruit)
+RegisterNetEvent('qb-bossmenu:server:giveJob', function(recruit)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local Target = QBCore.Functions.GetPlayer(recruit)
